@@ -102,6 +102,16 @@ resource "aws_ssm_parameter" "snyk_ssm_db_name" {
 
 resource "aws_s3_bucket" "snyk_storage" {
   bucket = "snyk-storage-${var.environment}-demo"
+
+  # Enable encryption-at-rest using AES256
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+}
   tags = merge(var.default_tags, {
     name = "snyk_blob_storage_${var.environment}"
   })
@@ -109,6 +119,16 @@ resource "aws_s3_bucket" "snyk_storage" {
 
 resource "aws_s3_bucket" "my-new-undeployed-bucket" {
   bucket = "snyk-public-${var.environment}-demo"
+
+  # Enable encryption-at-rest using AES256
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+}
 }
 
 resource "aws_s3_bucket_public_access_block" "snyk_public" {
